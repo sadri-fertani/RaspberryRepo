@@ -16,9 +16,13 @@ try:
         # Remember that your sentences can only be 16 characters long!
         print("Writing to display")
         # Write line of text to first line of display
-        display.lcd_display_string("I love you Hanen", 1)
+        userInputLine1 = input(
+            "Please enter any thing to display on the first line of LCD screen : ")
+        display.lcd_display_string(userInputLine1, 1)
         # Write line of text to second line of display
-        display.lcd_display_string("And Ela And Lina", 2)
+        userInputLine2 = input(
+            "Please enter any thing to display on the second line : ")
+        display.lcd_display_string(userInputLine2, 2)
         # Give time for the message to be read
         time.sleep(2)
         display.lcd_clear()                               # Clear the display of any data
