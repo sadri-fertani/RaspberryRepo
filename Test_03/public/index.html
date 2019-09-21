@@ -1,26 +1,70 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
 <body>
-    <h1>Control LED light</h1>
-    <p><input type="checkbox" id="light"></p>
+    <main role="main" class="container">
+        <div class="jumbotron  mt-3">
+            <div class="container">
+                <h1 class="display-4">Control LED light</h1>
+
+                <br />
+                <br />
+
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="light">
+                    <label class="custom-control-label" for="light">Red LED</label>
+                </div>
+
+                <br />
+
+                <div class="form-group">
+                    <label for="line1">Line 1 :</label>
+                    <input type="text" class="form-control" id="line1" maxlength="20" placeholder="Text line n°1">
+                </div>
+
+                <div class="form-group">
+                    <label for="line2">Line 2 :</label>
+                    <input type="text" class="form-control" id="line2" maxlength="20" placeholder="Text line n°2">
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-    <!-- include socket.io client side script -->
+
     <script>
         var socket = io(); //load socket.io-client and connect to the host that serves the page
+
         window.addEventListener("load", function () { //when page loads
             var lightbox = document.getElementById("light");
+            var line1 = document.getElementById("line1");
+            var line2 = document.getElementById("line2");
+
             lightbox.addEventListener("change", function () { //add event listener for when checkbox changes
                 socket.emit("light", Number(this.checked)); //send button status to server (as 1 or 0)
             });
+
+            line1.addEventListener("change", function () {
+                socket.emit("line1", this.value);
+            });
+
+            line2.addEventListener("change", function () {
+                socket.emit("line2", this.value);
+            });
         });
+
         socket.on('light', function (data) { //get button status from client
             document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
             socket.emit("light", data); //send push button status to back to server
         });
     </script>
-
-</html>
 </body>
 
 </html>
