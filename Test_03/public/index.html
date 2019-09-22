@@ -15,6 +15,15 @@
                 <h1 class="display-4">Control LED light</h1>
 
                 <br />
+
+                <div class="alert alert-danger alert-dismissible fade show" id="intrude" role="alert" style="display: none;" onclick="$('#intrude').hide();">
+                    <strong>Intruder alert !</strong>
+                </div>
+
+                <div class="alert alert-warning" role="alert" id="temperature-pression" style="display: none;">
+                    temperature: 26.0°C, humidity: 36.0%
+                </div>
+
                 <br />
 
                 <div class="custom-control custom-switch">
@@ -26,12 +35,12 @@
 
                 <div class="form-group">
                     <label for="line1">Line 1 :</label>
-                    <input type="text" class="form-control" id="line1" maxlength="20" placeholder="Text line n°1">
+                    <input type="text" class="form-control" id="line1" placeholder="Text line n°1">
                 </div>
 
                 <div class="form-group">
                     <label for="line2">Line 2 :</label>
-                    <input type="text" class="form-control" id="line2" maxlength="20" placeholder="Text line n°2">
+                    <input type="text" class="form-control" id="line2" placeholder="Text line n°2">
                 </div>
             </div>
         </div>
@@ -58,11 +67,25 @@
             line2.addEventListener("change", function () {
                 socket.emit("line2", this.value);
             });
+
+            setInterval(() => {
+                console.log('Fetch Temperature & Pression');
+                socket.emit("temperature-pression");
+            }, 2000);
         });
 
-        socket.on('light', function (data) { //get button status from client
+        socket.on('light', function (data) {
             document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
-            socket.emit("light", data); //send push button status to back to server
+            socket.emit("light", data);
+        });
+
+        socket.on('temperature-pression', function (data) {
+            $('#temperature-pression').show();
+            document.getElementById("temperature-pression").textContent = data;
+        });
+
+        socket.on('intrude', function () {
+            $('#intrude').show();
         });
     </script>
 </body>
