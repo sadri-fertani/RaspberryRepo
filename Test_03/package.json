@@ -9,7 +9,7 @@
     "@types/pigpio": "^1.2.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "i2c-bus": "^5.0.0",
     "lcdi2c": "^1.0.6",
     "node-dht-sensor": "^0.3.0",
